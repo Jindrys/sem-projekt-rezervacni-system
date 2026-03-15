@@ -1,6 +1,11 @@
 const MAX_DURATION_HOURS = 4
 const MIN_CANCELLATION_HOURS = 1
 
+// Pomocná funkce – výpočet rozdílu dvou datumů v hodinách
+function diffInHours(dateA, dateB) {
+  return (dateA.getTime() - dateB.getTime()) / (1000 * 60 * 60)
+}
+
 /*
   Pravidlo 1: Zkontroluje zda nová rezervace časově koliduje s existujícími.
   Kolize nastane pokud: newStart < existingEnd AND newEnd > existingStart
@@ -16,9 +21,7 @@ function hasTimeConflict(existingReservations, newStart, newEnd) {
   Přijímá `now` jako parametr – snadnější testování, žádná závislost na systémovém čase.
  */
 function isCancellationAllowed(startTime, now) {
-  const diffMs = startTime.getTime() - now.getTime()
-  const diffHours = diffMs / (1000 * 60 * 60)
-  return diffHours > MIN_CANCELLATION_HOURS
+  return diffInHours(startTime, now) > MIN_CANCELLATION_HOURS
 }
 
 /*
@@ -32,9 +35,7 @@ function canUserModifyReservation(user, reservation) {
   Pravidlo 4: Rezervace nesmí přesáhnout MAX_DURATION_HOURS.
  */
 function isWithinMaxDuration(startTime, endTime) {
-  const diffMs = endTime.getTime() - startTime.getTime()
-  const diffHours = diffMs / (1000 * 60 * 60)
-  return diffHours <= MAX_DURATION_HOURS
+  return diffInHours(endTime, startTime) <= MAX_DURATION_HOURS
 }
 
 /*
@@ -42,7 +43,7 @@ function isWithinMaxDuration(startTime, endTime) {
   Přijímá `now` jako parametr – stejný důvod jako u pravidla 2.
  */
 function isReservationInFuture(startTime, now) {
-  return startTime.getTime() > now.getTime()
+  return diffInHours(startTime, now) > 0
 }
 
 module.exports = {
