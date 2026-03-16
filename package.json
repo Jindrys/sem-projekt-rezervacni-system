@@ -12,13 +12,32 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "testTimeout": 15000
+    "testTimeout": 15000,
+    "setupFiles": [
+      "dotenv/config"
+    ],
+    "projects": [
+      {
+        "displayName": "unit",
+        "testMatch": [
+          "**/tests/unit/**/*.test.js"
+        ]
+      },
+      {
+        "displayName": "integration",
+        "testMatch": [
+          "**/tests/integration/**/*.test.js"
+        ],
+        "globalSetup": "<rootDir>/tests/integration/globalSetup.js"
+      }
+    ]
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "pg": "^8.20.0",
     "pg-hstore": "^2.3.4",
