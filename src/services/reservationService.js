@@ -8,6 +8,8 @@ const {
   isReservationInFuture,
 } = require('../domain/rules')
 
+const notificationService = require('./notificationService')
+
 // Vytvoření rezervace
 async function createReservation({ roomId, userId, startTime, endTime }) {
   const start = new Date(startTime)
@@ -60,7 +62,9 @@ async function createReservation({ roomId, userId, startTime, endTime }) {
 
 // Zrušení rezervace
 async function cancelReservation({ reservationId, requestingUser }) {
-  const reservation = await Reservation.findByPk(reservationId)
+  const reservation = await Reservation.findByPk(reservationId, {
+    include: [{ model: User, as: 'user' }]
+  })
 
   if (!reservation) {
     throw new Error('Rezervace nebyla nalezena')
@@ -81,6 +85,12 @@ async function cancelReservation({ reservationId, requestingUser }) {
   }
 
   await reservation.update({ status: 'cancelled' })
+
+  // Pošli notifikaci – tohle budeme mockovat v testech
+  await notificationService.sendCancellationEmail(
+    reservation.user.email,
+    reservation
+  )
 
   return reservation
 }
