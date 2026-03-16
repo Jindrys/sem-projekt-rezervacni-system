@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reservation-config
+  namespace: staging
+data:
+  DB_HOST: "postgres-service"
+  DB_PORT: "5432"
+  DB_NAME: "reservation_db"
+  DB_DIALECT: "postgres"
+  NODE_ENV: "staging"
+  PORT: "3000"
