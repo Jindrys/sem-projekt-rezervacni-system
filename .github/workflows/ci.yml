@@ -72,7 +72,28 @@ jobs:
           NODE_ENV: test
         run: npm run test:integration
 
-  # ── Job 3: Coverage ───────────────────────────────────
+  # ── Job 3: Statická analýza ───────────────────────────
+  lint:
+    name: Statická analýza kódu
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout kódu
+        uses: actions/checkout@v4
+
+      - name: Nastav Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Instalace závislostí
+        run: npm ci
+
+      - name: Spusť ESLint
+        run: npm run lint
+
+  # ── Job 4: Coverage ───────────────────────────────────
   coverage:
     name: Code coverage
     runs-on: ubuntu-latest
@@ -101,7 +122,7 @@ jobs:
           path: coverage/
           retention-days: 7
 
-  # ── Job 4: Docker build ───────────────────────────────
+  # ── Job 5: Docker build ───────────────────────────────
   docker-build:
     name: Docker build
     runs-on: ubuntu-latest
