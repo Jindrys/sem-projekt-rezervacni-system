@@ -17,6 +17,13 @@
     "setupFiles": [
       "dotenv/config"
     ],
+    "reporters": [
+      "default",
+      ["jest-junit", {
+        "outputDirectory": "reports",
+        "outputName": "junit.xml"
+      }]
+    ],
     "projects": [
       {
         "displayName": "unit",
@@ -64,6 +71,7 @@
     "c8": "^11.0.0",
     "eslint": "^9.39.4",
     "jest": "^30.3.0",
+    "jest-junit": "^16.0.0",
     "nodemon": "^3.1.14",
     "sequelize-mock": "^0.10.2",
     "supertest": "^7.2.2"
