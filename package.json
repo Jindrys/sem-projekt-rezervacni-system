@@ -32,6 +32,21 @@
       }
     ]
   },
+  "c8": {
+    "reporter": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "exclude": [
+      "tests/**",
+      "node_modules/**"
+    ],
+    "branches": 50,
+    "lines": 70,
+    "functions": 70,
+    "statements": 70
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
