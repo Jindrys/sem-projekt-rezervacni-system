@@ -134,3 +134,21 @@ jobs:
 
       - name: Sestav Docker image
         run: docker build -t reservation-system:${{ github.sha }} .
+        
+  # ── Job 6: CD – deploy do staging ────────────────────
+  deploy-staging:
+    name: Deploy do staging
+    runs-on: ubuntu-latest
+    needs: [docker-build]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+
+    steps:
+      - name: Checkout kódu
+        uses: actions/checkout@v4
+
+      - name: Simulace deploye do staging
+        run: |
+          echo "Deploying to staging namespace..."
+          echo "Image: reservation-system:${{ github.sha }}"
+          echo "kubectl apply -f k8s/"
+          echo "Deploy successful"
