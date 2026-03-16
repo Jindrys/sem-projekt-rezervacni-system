@@ -92,7 +92,7 @@ jobs:
         run: npm ci
 
       - name: Spusť testy s coverage
-        run: npm run test:coverage
+        run: npx c8 jest tests/unit --runInBand
 
       - name: Publikuj coverage report
         uses: actions/upload-artifact@v4
