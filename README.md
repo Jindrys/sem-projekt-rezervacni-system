@@ -39,22 +39,55 @@ PostgreSQL
 ---
 
 ## Spuštění lokálně
+
+### Požadavky
+- Node.js 20+
+- Docker a docker-compose
+
+### Postup
 ```bash
 git clone https://github.com/TVOJE_JMENO/sem-projekt-rezervacni-system.git
 cd sem-projekt-rezervacni-system
 npm install
 cp .env.example .env
+```
+
+Vyplň `.env` soubor těmito hodnotami:
+```
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=reservation_db
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_DIALECT=postgres
+NODE_ENV=development
+PORT=3000
+```
+
+Spusť databáze a aplikaci:
+```bash
 docker-compose up -d db db_test
 npm run dev
 ```
 
 API běží na `http://localhost:3000`
 
+### Ověření funkčnosti
+```bash
+curl http://localhost:3000/health
+```
+
+Očekávaná odpověď:
+```json
+{"status":"ok"}
+```
+
 ### Testy
 ```bash
 npm run test:unit          # unit testy
 npm run test:integration   # integrační testy (vyžaduje db_test)
 npm run test:coverage      # coverage report
+npm run lint               # statická analýza kódu
 ```
 
 ---
@@ -72,15 +105,32 @@ npm run test:coverage      # coverage report
 ---
 
 ## Nasazení do Kubernetes (minikube)
+
+### Požadavky
+- Docker
+- minikube
+- kubectl
+
+### Postup
 ```bash
 minikube start
 minikube addons enable ingress
 docker build -t reservation-system:latest .
 minikube image load reservation-system:latest
 kubectl apply -f k8s/
+```
+
+Počkat až běží postgres :
+```bash
 kubectl get pods -n staging
+```
+
+Až budou všechny pody `1/1 Running`, zpřístupnění API:
+```bash
 kubectl port-forward service/reservation-service 3000:80 -n staging
 ```
+
+API běží na `http://localhost:3000`
 
 ### Prostředí
 
