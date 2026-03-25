@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
+    "dev": "nodemon src/server.js",
     "test": "jest --runInBand",
     "test:coverage": "c8 jest --runInBand",
     "test:unit": "jest tests/unit --runInBand",
@@ -19,10 +19,13 @@
     ],
     "reporters": [
       "default",
-      ["jest-junit", {
-        "outputDirectory": "reports",
-        "outputName": "junit.xml"
-      }]
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "reports",
+          "outputName": "junit.xml"
+        }
+      ]
     ],
     "projects": [
       {
